@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,53 +13,53 @@ import Paper from '@mui/material/Paper';
 
 import styles from './basicTable.module.scss';
 
-const rows = [
-  { data: '04.05.2024 17:56', name: 'Новий таск' },
-  { data: '04.05.2024 17:56', name: 'Новий таск' },
-  { data: '04.05.2024 17:56', name: 'Новий таск' },
-];
+import { RootState, useAppSelector } from '../../redux/store';
 
-const BasicTable: React.FC = () => (
-  <Paper elevation={3}>
-    <TableContainer className={styles.table}>
-      <Table sx={{ width: 800 }} aria-label='simple table'>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: 120 }}>Дата створення</TableCell>
-            <TableCell sx={{ width: 50 }} align='left'>
-              Статус
-            </TableCell>
-            <TableCell sx={{ width: 300 }} align='left'>
-              Назва
-            </TableCell>
-            <TableCell sx={{ width: 40 }} align='left'>
-              Дії
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.data}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component='th' scope='row' align='left'>
-                {row.data}
+const BasicTable: React.FC = () => {
+  const tasks = useAppSelector((state: RootState) => state.tasks.tasks);
+  return (
+    <Paper elevation={3}>
+      <TableContainer className={styles.table}>
+        <Table sx={{ width: 800 }} aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ width: 120 }}>Дата створення</TableCell>
+              <TableCell sx={{ width: 50 }} align='left'>
+                Статус
               </TableCell>
-              <TableCell align='left'>
-                <Checkbox />
+              <TableCell sx={{ width: 300 }} align='left'>
+                Назва
               </TableCell>
-              <TableCell align='left'>{row.name}</TableCell>
-              <TableCell align='left'>
-                <PushPinIcon className={styles.icons} />
-                <DeleteIcon className={styles.icons} />
+              <TableCell sx={{ width: 40 }} align='left'>
+                Дії
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Paper>
-);
+          </TableHead>
+          <TableBody>
+            {tasks.length > 0 &&
+              tasks.map((row) => (
+                <TableRow
+                  key={row.date}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component='th' scope='row' align='left'>
+                    {row.date}
+                  </TableCell>
+                  <TableCell align='left'>
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell align='left'>{row.name}</TableCell>
+                  <TableCell align='left'>
+                    <PushPinIcon className={styles.icons} />
+                    <DeleteIcon className={styles.icons} />
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
+};
 
 export default BasicTable;
