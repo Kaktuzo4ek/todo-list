@@ -44,7 +44,14 @@
     "react/prop-types": "off",
     "jsx-quotes": [2, "prefer-single"],
     "comma-dangle": [2, "always-multiline"],
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": ["arrow-function", "function-declaration"],
+        "unnamedComponents": "arrow-function"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

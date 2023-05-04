@@ -1,6 +1,19 @@
-/* eslint-disable react/function-component-definition */
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Container from '@mui/material/Container';
 
-const App: React.FC = () => <div className='App'>a</div>;
+import Header from './components/header';
+import Home from './pages/home';
+
+const App: React.FC = () => (
+  <div className='App'>
+    <Header />
+    <Container maxWidth='lg'>
+      <Routes>
+        <Route path='/' element={<Home />} />
+      </Routes>
+    </Container>
+  </div>
+);
 
 export default App;
