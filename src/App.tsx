@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
 
-import Header from './components/header';
+import Header from './components/Header';
 import Home from './pages/home';
 
 const App: React.FC = () => (
