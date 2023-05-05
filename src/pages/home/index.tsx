@@ -1,3 +1,5 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable object-curly-newline */
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import TextField from '@mui/material/TextField';
@@ -8,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import styles from './home.module.scss';
 import BasicTable from '../../components/Table';
 import Widget from '../../components/Widget';
-import { addTask, Task } from '../../redux/tasks';
+import { addTask, Task, deleteTask, pinTask } from '../../redux/tasks';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,8 +29,32 @@ const Home: React.FC = () => {
       isPinned: false,
     };
     dispatch(addTask(task));
-    setTasks([...tasks, task]);
+    setTasks((prev) => [...prev, task]);
     window.localStorage.setItem('tasks', JSON.stringify([...tasks, task]));
+  };
+
+  const removeTask = (task: Task): void => {
+    dispatch(deleteTask(task));
+    setTasks((prev) => prev.filter((item) => item.date !== task.date));
+    window.localStorage.setItem(
+      'tasks',
+      JSON.stringify(tasks.filter((item) => item.date !== task.date)),
+    );
+  };
+
+  const clickPinTask = (task: Task): void => {
+    dispatch(pinTask(task));
+    // let newTask = tasks.find((item) => item.date === task.date);
+
+    // newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+
+    // const pinedTask = { ...newTask, isPinned: true };
+
+    // setTasks([pinedTask, tasks.filter((item) => item.date !== task.date)]);
+    // window.localStorage.setItem(
+    //   'tasks',
+    //   JSON.stringify(tasks.filter((item) => item.date !== task.date)),
+    // );
   };
 
   return (
@@ -54,7 +80,7 @@ const Home: React.FC = () => {
       <div className={styles.flexBox}>
         <div className={styles.tasks}>
           <h1>Список справ</h1>
-          <BasicTable />
+          <BasicTable onRemoveTask={removeTask} onPinTask={clickPinTask} />
           <h1>Завершені справи</h1>
           {/* <BasicTable /> */}
         </div>

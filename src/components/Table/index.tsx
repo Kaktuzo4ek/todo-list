@@ -14,9 +14,24 @@ import Paper from '@mui/material/Paper';
 import styles from './basicTable.module.scss';
 
 import { RootState, useAppSelector } from '../../redux/store';
+import { Task } from '../../redux/tasks';
 
-const BasicTable: React.FC = () => {
+interface BasicTableProps {
+  onRemoveTask: (task: Task) => void;
+  onPinTask: (task: Task) => void;
+}
+
+const BasicTable: React.FC<BasicTableProps> = ({ onRemoveTask, onPinTask }) => {
   const tasks = useAppSelector((state: RootState) => state.tasks.tasks);
+
+  const onRemoveTaskClick = (task: Task): void => {
+    onRemoveTask(task);
+  };
+
+  const onPinTaskClick = (task: Task): void => {
+    onPinTask(task);
+  };
+
   return (
     <Paper elevation={3}>
       <TableContainer className={styles.table}>
@@ -50,8 +65,14 @@ const BasicTable: React.FC = () => {
                   </TableCell>
                   <TableCell align='left'>{row.name}</TableCell>
                   <TableCell align='left'>
-                    <PushPinIcon className={styles.icons} />
-                    <DeleteIcon className={styles.icons} />
+                    <PushPinIcon
+                      onClick={() => onPinTaskClick(row)}
+                      className={styles.icons}
+                    />
+                    <DeleteIcon
+                      onClick={() => onRemoveTaskClick(row)}
+                      className={styles.icons}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
