@@ -1,3 +1,5 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable object-curly-newline */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -10,14 +12,24 @@ import { useDispatch } from 'react-redux';
 import styles from './home.module.scss';
 import BasicTable from '../../components/Table';
 import Widget from '../../components/Widget';
-import { addTask, Task, deleteTask, pinTask } from '../../redux/tasks';
+import {
+  addTask,
+  Task,
+  deleteTask,
+  pinTask,
+  unpinTask,
+} from '../../redux/tasks';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   const [taskName, setTaskName] = React.useState('');
 
-  const [tasks, setTasks] = React.useState<Task[]>([]);
+  const [tasks, setTasks] = React.useState<Task[]>(
+    window.localStorage.getItem('tasks')
+      ? JSON.parse(window.localStorage.getItem('tasks') as string)
+      : [],
+  );
 
   const createTask = (): void => {
     const task = {
@@ -44,17 +56,43 @@ const Home: React.FC = () => {
 
   const clickPinTask = (task: Task): void => {
     dispatch(pinTask(task));
-    // let newTask = tasks.find((item) => item.date === task.date);
+    let newTask = tasks.find((item) => item.date === task.date);
 
-    // newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+    newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
 
-    // const pinedTask = { ...newTask, isPinned: true };
+    const pinedTask = { ...newTask, isPinned: true };
 
-    // setTasks([pinedTask, tasks.filter((item) => item.date !== task.date)]);
-    // window.localStorage.setItem(
-    //   'tasks',
-    //   JSON.stringify(tasks.filter((item) => item.date !== task.date)),
-    // );
+    setTasks([pinedTask, ...tasks.filter((item) => item.date !== task.date)]);
+    window.localStorage.setItem(
+      'tasks',
+      JSON.stringify([
+        pinedTask,
+        ...tasks.filter((item) => item.date !== task.date),
+      ]),
+    );
+  };
+
+  const clickUnpinTask = (task: Task): void => {
+    dispatch(unpinTask(task));
+    let newTask = tasks.find((item) => item.date === task.date);
+
+    newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+
+    const pinedTask = { ...newTask, isPinned: false };
+
+    setTasks(
+      [pinedTask, ...tasks.filter((item) => item.date !== task.date)].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      ),
+    );
+    window.localStorage.setItem(
+      'tasks',
+      JSON.stringify(
+        [pinedTask, ...tasks.filter((item) => item.date !== task.date)].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
+      ),
+    );
   };
 
   return (
@@ -80,7 +118,11 @@ const Home: React.FC = () => {
       <div className={styles.flexBox}>
         <div className={styles.tasks}>
           <h1>Список справ</h1>
-          <BasicTable onRemoveTask={removeTask} onPinTask={clickPinTask} />
+          <BasicTable
+            onRemoveTask={removeTask}
+            onPinTask={clickPinTask}
+            onUnpinTask={clickUnpinTask}
+          />
           <h1>Завершені справи</h1>
           {/* <BasicTable /> */}
         </div>

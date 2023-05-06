@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PushPinIcon from '@mui/icons-material/PushPin';
+import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import Paper from '@mui/material/Paper';
 
 import styles from './basicTable.module.scss';
@@ -19,18 +20,15 @@ import { Task } from '../../redux/tasks';
 interface BasicTableProps {
   onRemoveTask: (task: Task) => void;
   onPinTask: (task: Task) => void;
+  onUnpinTask: (task: Task) => void;
 }
 
-const BasicTable: React.FC<BasicTableProps> = ({ onRemoveTask, onPinTask }) => {
+const BasicTable: React.FC<BasicTableProps> = ({
+  onRemoveTask,
+  onPinTask,
+  onUnpinTask,
+}) => {
   const tasks = useAppSelector((state: RootState) => state.tasks.tasks);
-
-  const onRemoveTaskClick = (task: Task): void => {
-    onRemoveTask(task);
-  };
-
-  const onPinTaskClick = (task: Task): void => {
-    onPinTask(task);
-  };
 
   return (
     <Paper elevation={3}>
@@ -65,12 +63,19 @@ const BasicTable: React.FC<BasicTableProps> = ({ onRemoveTask, onPinTask }) => {
                   </TableCell>
                   <TableCell align='left'>{row.name}</TableCell>
                   <TableCell align='left'>
-                    <PushPinIcon
-                      onClick={() => onPinTaskClick(row)}
-                      className={styles.icons}
-                    />
+                    {row.isPinned ? (
+                      <PushPinIcon
+                        onClick={() => onUnpinTask(row)}
+                        className={styles.icons}
+                      />
+                    ) : (
+                      <PushPinOutlinedIcon
+                        onClick={() => onPinTask(row)}
+                        className={styles.icons}
+                      />
+                    )}
                     <DeleteIcon
-                      onClick={() => onRemoveTaskClick(row)}
+                      onClick={() => onRemoveTask(row)}
                       className={styles.icons}
                     />
                   </TableCell>

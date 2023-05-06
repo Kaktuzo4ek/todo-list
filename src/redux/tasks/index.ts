@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-unneeded-ternary */
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -48,9 +49,30 @@ export const tasksSlice = createSlice({
 
       return { ...state, tasks: newTasks };
     },
+    unpinTask: (state, action: PayloadAction<Task>) => {
+      let newTask = state.tasks.find(
+        (task) => task.date === action.payload.date,
+      );
+
+      newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+
+      const unpinedTask = { ...newTask, isPinned: false };
+
+      const newTasks = [
+        unpinedTask,
+        ...state.tasks.filter((task) => task.date !== action.payload.date),
+      ];
+
+      return {
+        ...state,
+        tasks: newTasks.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
+      };
+    },
   },
 });
 
-export const { addTask, deleteTask, pinTask } = tasksSlice.actions;
+export const { addTask, deleteTask, pinTask, unpinTask } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
