@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-unneeded-ternary */
@@ -32,26 +33,30 @@ const Home: React.FC = () => {
   );
 
   const createTask = (): void => {
-    const task = {
-      date: `${new Date().toISOString().split('T')[0]} ${new Date()
-        .toISOString()
-        .split('T')[1]
-        .slice(0, 8)}`,
-      name: taskName,
-      isPinned: false,
-    };
-    dispatch(addTask(task));
-    setTasks((prev) => [...prev, task]);
-    window.localStorage.setItem('tasks', JSON.stringify([...tasks, task]));
+    if (window.confirm('Додати справу?')) {
+      const task = {
+        date: `${new Date().toISOString().split('T')[0]} ${new Date()
+          .toISOString()
+          .split('T')[1]
+          .slice(0, 8)}`,
+        name: taskName,
+        isPinned: false,
+      };
+      dispatch(addTask(task));
+      setTasks((prev) => [...prev, task]);
+      window.localStorage.setItem('tasks', JSON.stringify([...tasks, task]));
+    }
   };
 
   const removeTask = (task: Task): void => {
-    dispatch(deleteTask(task));
-    setTasks((prev) => prev.filter((item) => item.date !== task.date));
-    window.localStorage.setItem(
-      'tasks',
-      JSON.stringify(tasks.filter((item) => item.date !== task.date)),
-    );
+    if (window.confirm('Видалити справу?')) {
+      dispatch(deleteTask(task));
+      setTasks((prev) => prev.filter((item) => item.date !== task.date));
+      window.localStorage.setItem(
+        'tasks',
+        JSON.stringify(tasks.filter((item) => item.date !== task.date)),
+      );
+    }
   };
 
   const clickPinTask = (task: Task): void => {
