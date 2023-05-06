@@ -19,6 +19,7 @@ import {
   deleteTask,
   pinTask,
   unpinTask,
+  completeTaskToggle,
 } from '../../redux/tasks';
 
 const Home: React.FC = () => {
@@ -41,6 +42,7 @@ const Home: React.FC = () => {
           .slice(0, 8)}`,
         name: taskName,
         isPinned: false,
+        isCompleted: false,
       };
       dispatch(addTask(task));
       setTasks((prev) => [...prev, task]);
@@ -63,7 +65,9 @@ const Home: React.FC = () => {
     dispatch(pinTask(task));
     let newTask = tasks.find((item) => item.date === task.date);
 
-    newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+    newTask = newTask
+      ? newTask
+      : { date: '', name: '', isPinned: false, isCompleted: false };
 
     const pinedTask = { ...newTask, isPinned: true };
 
@@ -81,7 +85,9 @@ const Home: React.FC = () => {
     dispatch(unpinTask(task));
     let newTask = tasks.find((item) => item.date === task.date);
 
-    newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+    newTask = newTask
+      ? newTask
+      : { date: '', name: '', isPinned: false, isCompleted: false };
 
     const pinedTask = { ...newTask, isPinned: false };
 
@@ -94,6 +100,35 @@ const Home: React.FC = () => {
       'tasks',
       JSON.stringify(
         [pinedTask, ...tasks.filter((item) => item.date !== task.date)].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
+      ),
+    );
+  };
+
+  const clickCompleteTaskToggle = (task: Task): void => {
+    dispatch(completeTaskToggle(task));
+    let newTask = tasks.find((item) => item.date === task.date);
+
+    newTask = newTask
+      ? newTask
+      : { date: '', name: '', isPinned: false, isCompleted: false };
+
+    const editedTask = { ...newTask, isCompleted: !newTask.isCompleted };
+
+    setTasks([
+      editedTask,
+      ...tasks
+        .filter((item) => item.date !== task.date)
+        .sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
+    ]);
+
+    window.localStorage.setItem(
+      'tasks',
+      JSON.stringify(
+        [editedTask, ...tasks.filter((item) => item.date !== task.date)].sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
         ),
       ),
@@ -127,9 +162,17 @@ const Home: React.FC = () => {
             onRemoveTask={removeTask}
             onPinTask={clickPinTask}
             onUnpinTask={clickUnpinTask}
+            onCompleteTaskToggle={clickCompleteTaskToggle}
+            completedTask={false}
           />
           <h1>Завершені справи</h1>
-          {/* <BasicTable /> */}
+          <BasicTable
+            onRemoveTask={removeTask}
+            onPinTask={clickPinTask}
+            onUnpinTask={clickUnpinTask}
+            onCompleteTaskToggle={clickCompleteTaskToggle}
+            completedTask
+          />
         </div>
         <div className={styles.widgets}>
           <h1>Віджети</h1>

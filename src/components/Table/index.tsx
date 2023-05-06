@@ -1,3 +1,7 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable no-confusing-arrow */
+/* eslint-disable function-paren-newline */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable operator-linebreak */
 import React from 'react';
 import Table from '@mui/material/Table';
@@ -11,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import Paper from '@mui/material/Paper';
+import classNames from 'classnames';
 
 import styles from './basicTable.module.scss';
 
@@ -21,14 +26,22 @@ interface BasicTableProps {
   onRemoveTask: (task: Task) => void;
   onPinTask: (task: Task) => void;
   onUnpinTask: (task: Task) => void;
+  onCompleteTaskToggle: (task: Task) => void;
+  completedTask: boolean;
 }
 
 const BasicTable: React.FC<BasicTableProps> = ({
   onRemoveTask,
   onPinTask,
   onUnpinTask,
+  onCompleteTaskToggle,
+  completedTask,
 }) => {
-  const tasks = useAppSelector((state: RootState) => state.tasks.tasks);
+  const tasks = useAppSelector((state: RootState) =>
+    completedTask
+      ? state.tasks.tasks.filter((item) => item.isCompleted)
+      : state.tasks.tasks.filter((item) => !item.isCompleted),
+  );
 
   return (
     <Paper elevation={3}>
@@ -59,9 +72,23 @@ const BasicTable: React.FC<BasicTableProps> = ({
                     {row.date}
                   </TableCell>
                   <TableCell align='left'>
-                    <Checkbox />
+                    {row.isCompleted ? (
+                      <Checkbox
+                        checked
+                        onClick={() => onCompleteTaskToggle(row)}
+                      />
+                    ) : (
+                      <Checkbox onClick={() => onCompleteTaskToggle(row)} />
+                    )}
                   </TableCell>
-                  <TableCell align='left'>{row.name}</TableCell>
+                  <TableCell
+                    align='left'
+                    className={classNames({
+                      [styles.crossedText]: row.isCompleted,
+                    })}
+                  >
+                    {row.name}
+                  </TableCell>
                   <TableCell align='left'>
                     {row.isPinned ? (
                       <PushPinIcon

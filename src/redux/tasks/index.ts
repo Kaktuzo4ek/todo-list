@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-unneeded-ternary */
 import { createSlice } from '@reduxjs/toolkit';
@@ -7,6 +8,7 @@ export interface Task {
   date: string;
   name: string;
   isPinned: boolean;
+  isCompleted: boolean;
 }
 
 export interface TasksState {
@@ -38,7 +40,9 @@ export const tasksSlice = createSlice({
         (task) => task.date === action.payload.date,
       );
 
-      newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+      newTask = newTask
+        ? newTask
+        : { date: '', name: '', isPinned: false, isCompleted: false };
 
       const pinedTask = { ...newTask, isPinned: true };
 
@@ -54,7 +58,9 @@ export const tasksSlice = createSlice({
         (task) => task.date === action.payload.date,
       );
 
-      newTask = newTask ? newTask : { date: '', name: '', isPinned: false };
+      newTask = newTask
+        ? newTask
+        : { date: '', name: '', isPinned: false, isCompleted: false };
 
       const unpinedTask = { ...newTask, isPinned: false };
 
@@ -70,9 +76,33 @@ export const tasksSlice = createSlice({
         ),
       };
     },
+    completeTaskToggle: (state, action: PayloadAction<Task>) => {
+      let newTask = state.tasks.find(
+        (task) => task.date === action.payload.date,
+      );
+
+      newTask = newTask
+        ? newTask
+        : { date: '', name: '', isPinned: false, isCompleted: false };
+
+      const editedTask = { ...newTask, isCompleted: !newTask.isCompleted };
+
+      const newTasks = [
+        editedTask,
+        ...state.tasks.filter((task) => task.date !== action.payload.date),
+      ];
+
+      return {
+        ...state,
+        tasks: newTasks.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
+      };
+    },
   },
 });
 
-export const { addTask, deleteTask, pinTask, unpinTask } = tasksSlice.actions;
+export const { addTask, deleteTask, pinTask, unpinTask, completeTaskToggle } =
+  tasksSlice.actions;
 
 export default tasksSlice.reducer;
