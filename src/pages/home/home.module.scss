@@ -1,3 +1,9 @@
+.container {
+  margin: 0 auto;
+  padding-top: 100px;
+  width: 1200px;
+}
+
 .flexBox {
   display: flex;
   justify-content: space-between;
@@ -26,4 +32,8 @@
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.widgets {
+  margin-bottom: 50px;
 }

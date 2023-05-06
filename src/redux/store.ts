@@ -2,9 +2,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import tasksReducer from './tasks';
+import widgetsReducer from './widgets';
 
 export const store = configureStore({
-  reducer: { tasks: tasksReducer },
+  reducer: { tasks: tasksReducer, widgets: widgetsReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

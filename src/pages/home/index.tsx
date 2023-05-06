@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-alert */
 /* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
@@ -9,10 +11,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { useDispatch } from 'react-redux';
+import { RootState, useAppSelector } from '../../redux/store';
+import Widget from '../../components/Widget';
 
 import styles from './home.module.scss';
 import BasicTable from '../../components/Table';
-import Widget from '../../components/Widget';
 import {
   addTask,
   Task,
@@ -21,6 +24,12 @@ import {
   unpinTask,
   completeTaskToggle,
 } from '../../redux/tasks';
+import {
+  fetchWidget1,
+  fetchWidget2,
+  fetchWidget3,
+  fetchWidget4,
+} from '../../redux/widgets';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,6 +40,10 @@ const Home: React.FC = () => {
     window.localStorage.getItem('tasks')
       ? JSON.parse(window.localStorage.getItem('tasks') as string)
       : [],
+  );
+
+  const widgets = useAppSelector(
+    (state: RootState) => state.widgets.widgets.items,
   );
 
   const createTask = (): void => {
@@ -135,8 +148,15 @@ const Home: React.FC = () => {
     );
   };
 
+  React.useEffect(() => {
+    dispatch(fetchWidget1() as any);
+    dispatch(fetchWidget2() as any);
+    dispatch(fetchWidget3() as any);
+    dispatch(fetchWidget4() as any);
+  }, []);
+
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.flexBox}>
         <TextField
           className={styles.inputField}
@@ -176,15 +196,22 @@ const Home: React.FC = () => {
         </div>
         <div className={styles.widgets}>
           <h1>Віджети</h1>
-          <Paper elevation={3} className={styles.widget}>
-            <Widget />
-          </Paper>
-          <Paper elevation={3} className={styles.widget}>
-            <Widget />
-          </Paper>
-          <Paper elevation={3} className={styles.widget}>
-            <Widget />
-          </Paper>
+          {widgets.map((item) => (
+            <Paper
+              key={`paper#${item.title}`}
+              elevation={3}
+              className={styles.widget}
+            >
+              <Widget
+                key={`widget#${item.title}`}
+                title={item.title}
+                type={item.type}
+                price={item.price}
+                percent={item.percent}
+                description={item.description}
+              />
+            </Paper>
+          ))}
         </div>
       </div>
     </div>
