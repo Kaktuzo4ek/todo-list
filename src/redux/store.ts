@@ -3,9 +3,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import tasksReducer from './tasks';
 import widgetsReducer from './widgets';
+import { authReducer } from './auth';
 
 export const store = configureStore({
-  reducer: { tasks: tasksReducer, widgets: widgetsReducer },
+  reducer: { tasks: tasksReducer, widgets: widgetsReducer, auth: authReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
