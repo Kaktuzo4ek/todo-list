@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Typography from '@mui/material/Typography';
@@ -42,24 +43,26 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Paper classes={{ root: styles.root }}>
-      <Typography classes={{ root: styles.title }} variant='h5'>
-        Вхід в аккаунт
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          className={styles.field}
-          label='E-Mail'
-          type='text'
-          error={Boolean(errors.name?.message)}
-          helperText={errors.name?.message}
-          {...register('name', { required: "Вкажіть ім'я" })}
-          fullWidth
-        />
-        <Button type='submit' size='large' variant='contained' fullWidth>
-          Увійти
-        </Button>
-      </form>
+    <Paper className={styles.container} elevation={0}>
+      <Paper classes={{ root: styles.root }} elevation={0}>
+        <Typography classes={{ root: styles.title }} variant='h5'>
+          Вхід в аккаунт
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            className={styles.field}
+            label={`Ім'я`}
+            type='text'
+            error={Boolean(errors.name?.message)}
+            helperText={errors.name?.message}
+            {...register('name', { required: "Вкажіть ім'я" })}
+            fullWidth
+          />
+          <Button type='submit' size='large' variant='contained' fullWidth>
+            Увійти
+          </Button>
+        </form>
+      </Paper>
     </Paper>
   );
 };

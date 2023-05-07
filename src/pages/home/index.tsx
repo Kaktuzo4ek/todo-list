@@ -158,15 +158,17 @@ const Home: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.flexBox}>
-        <TextField
-          className={styles.inputField}
-          id='outlined-basic'
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          label='Введіть назву справи'
-          variant='outlined'
-          size='small'
-        />
+        <Paper className={styles.inputField} elevation={0}>
+          <TextField
+            id='outlined-basic'
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+            label='Введіть назву справи'
+            variant='outlined'
+            size='small'
+            fullWidth
+          />
+        </Paper>
         <Button
           onClick={createTask}
           className={styles.createBtn}
