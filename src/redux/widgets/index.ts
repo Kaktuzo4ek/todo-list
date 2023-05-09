@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
@@ -52,10 +53,7 @@ export const fetchWidget3 = createAsyncThunk(
 export const fetchWidget4 = createAsyncThunk(
   'widget4/fetchWidget4',
   async () => {
-    const { data } = await axios.get(
-      'https://dog.ceo/api/breeds/image/random',
-      {},
-    );
+    const { data } = await axios.get('https://dog.ceo/api/breeds/image/random');
     return data;
   },
 );
@@ -64,8 +62,7 @@ export const fetchWidget5 = createAsyncThunk(
   'widget5/fetchWidget5',
   async () => {
     const { data } = await axios.get(
-      'https://dog.ceo/api/breeds/image/random',
-      {},
+      'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=aeff975321105b04fbc5bea603568d18',
     );
     return data;
   },
@@ -134,6 +131,21 @@ export const widgetsSlice = createSlice({
       });
     });
     builder.addCase(fetchWidget4.rejected, (state) => {
+      state.widgets.items = [];
+    });
+    builder.addCase(fetchWidget5.pending, (state) => {
+      state.widgets.items = [];
+    });
+    builder.addCase(fetchWidget5.fulfilled, (state, action) => {
+      state.widgets.items.push({
+        title: 'Weather',
+        type: action.payload.weather[0].main,
+        price: action.payload.main.temp,
+        percent: action.payload.main.humidity,
+        description: action.payload.weather[0].description,
+      });
+    });
+    builder.addCase(fetchWidget5.rejected, (state) => {
       state.widgets.items = [];
     });
   },

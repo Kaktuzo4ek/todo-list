@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 
 const App: React.FC = () => (
-  <Paper>
+  <Paper elevation={0}>
     <div className='App'>
       <Header />
       <Routes>

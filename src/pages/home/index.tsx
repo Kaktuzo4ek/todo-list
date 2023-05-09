@@ -29,6 +29,7 @@ import {
   fetchWidget2,
   fetchWidget3,
   fetchWidget4,
+  fetchWidget5,
 } from '../../redux/widgets';
 
 const Home: React.FC = () => {
@@ -153,6 +154,7 @@ const Home: React.FC = () => {
     dispatch(fetchWidget2() as any);
     dispatch(fetchWidget3() as any);
     dispatch(fetchWidget4() as any);
+    dispatch(fetchWidget5() as any);
   }, []);
 
   return (
