@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './widget.module.scss';
 
@@ -6,7 +7,7 @@ interface WidgetProps {
   title: string;
   type: string;
   price: string;
-  percent: string;
+  percent: number;
   description: string;
 }
 
@@ -24,7 +25,18 @@ const Widget: React.FC<WidgetProps> = ({
     </div>
     <h2>{price}</h2>
     <div className={styles.flexBox}>
-      <span className={styles.percent}>{percent}</span>
+      <span
+        className={classNames(
+          {
+            [styles.percentRed]: percent < 0,
+          },
+          {
+            [styles.percentGreen]: percent > 0,
+          },
+        )}
+      >
+        {`${percent > 0 ? `+ ${percent}` : percent}%`}
+      </span>
       <span>{description}</span>
     </div>
   </div>

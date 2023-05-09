@@ -12,7 +12,7 @@ export interface Widget {
   title: string;
   type: string;
   price: string;
-  percent: string;
+  percent: number;
   description: string;
 }
 
@@ -126,7 +126,7 @@ export const widgetsSlice = createSlice({
         title: action.payload.message.slice(0, 15),
         type: 'Annual',
         price: '62.302',
-        percent: '-12%',
+        percent: -12,
         description: action.payload.status,
       });
     });
