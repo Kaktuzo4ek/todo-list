@@ -1,8 +1,15 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .root {
   width: 400px;
   padding: 50px;
   border: 1px solid #dedede;
   margin: 50px auto;
+  margin-top: 200px;
 }
 
 .field {

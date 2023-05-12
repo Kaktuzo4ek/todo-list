@@ -1,8 +1,11 @@
 .table {
-  width: 800px;
   background-color: #fff;
 
   .icons {
     cursor: pointer;
+  }
+
+  .crossedText {
+    text-decoration: line-through;
   }
 }

@@ -18,9 +18,17 @@
     border-radius: 10px;
   }
 
-  .percent {
-    color: #ff0000;
-    background-color: #ff8a8a98;
+  .percentRed {
+    color: #fff;
+    background-color: #ff000098;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: 600;
+  }
+
+  .percentGreen {
+    color: #fff;
+    background-color: #09970498;
     border-radius: 10px;
     padding: 5px 10px;
     font-weight: 600;

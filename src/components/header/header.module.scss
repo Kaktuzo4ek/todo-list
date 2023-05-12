@@ -1,8 +1,11 @@
 .root {
+  position: fixed;
+  top: 0;
+  width: 100vw;
   background-color: #fff;
   padding: 15px 0;
   border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 30px;
+  z-index: 5;
 }
 
 .inner {
@@ -24,6 +27,11 @@
   &:hover {
     background-color: #4361ee;
   }
+}
+
+.flexBox {
+  display: flex;
+  align-items: center;
 }
 
 .buttons {
