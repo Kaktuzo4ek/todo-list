@@ -5,7 +5,7 @@
 /* eslint-disable no-unneeded-ternary */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import Widget from '../../components/Widget';
+import Widget from '../../components/widget';
 // import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface Widget {

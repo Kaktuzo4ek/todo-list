@@ -13,10 +13,10 @@ import Paper from '@mui/material/Paper';
 
 import { useDispatch } from 'react-redux';
 import { RootState, useAppSelector } from '../../redux/store';
-import Widget from '../../components/Widget';
+import Widget from '../../components/widget';
 
 import styles from './home.module.scss';
-import BasicTable from '../../components/Table';
+import BasicTable from '../../components/table';
 import {
   addTask,
   Task,
