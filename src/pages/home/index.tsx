@@ -5,7 +5,6 @@ import Paper from '@mui/material/Paper';
 
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState, useAppSelector } from '../../redux/store';
-import Widget from '../../components/widget';
 
 import styles from './home.module.scss';
 import BasicTable from '../../components/table';
@@ -17,13 +16,12 @@ import {
   unpinTask,
   completeTaskToggle,
 } from '../../redux/tasks';
-import {
-  fetchWidget1,
-  fetchWidget2,
-  fetchWidget3,
-  fetchWidget4,
-  fetchWidget5,
-} from '../../redux/widgets';
+
+import { fetchDogWidget } from '../../redux/widgets/dog';
+import { fetchIpWidget } from '../../redux/widgets/ip';
+import { fetchActivityWidget } from '../../redux/widgets/activity';
+import { fetchFactWidget } from '../../redux/widgets/fact';
+import { fetchWeatherWidget } from '../../redux/widgets/weather';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,8 +34,19 @@ const Home: React.FC = () => {
       : [],
   );
 
-  const widgets = useAppSelector(
-    (state: RootState) => state.widgets.widgets.items,
+  const dogWidget = useAppSelector((state: RootState) => state.dog.data);
+
+  const [ip, setIp] = React.useState('24.48.0.1');
+  const ipWidget = useAppSelector((state: RootState) => state.ip.data);
+
+  const activityWidget = useAppSelector(
+    (state: RootState) => state.activity.data,
+  );
+
+  const factWidget = useAppSelector((state: RootState) => state.fact.data);
+
+  const weatherWidget = useAppSelector(
+    (state: RootState) => state.weather.data,
   );
 
   const createTask = (): void => {
@@ -143,12 +152,14 @@ const Home: React.FC = () => {
   };
 
   React.useEffect(() => {
-    const fetchWidgets = (): void => {
-      dispatch(fetchWidget1());
-      dispatch(fetchWidget2());
-      dispatch(fetchWidget3());
-      dispatch(fetchWidget4());
-      dispatch(fetchWidget5());
+    const fetchWidgets = async (): Promise<void> => {
+      await dispatch(fetchDogWidget());
+      await dispatch(fetchIpWidget(ip));
+      await dispatch(fetchActivityWidget());
+      await dispatch(fetchFactWidget());
+      await dispatch(
+        fetchWeatherWidget({ lat: ipWidget.lat, lon: ipWidget.lon }),
+      );
     };
     fetchWidgets();
   }, []);
@@ -196,22 +207,123 @@ const Home: React.FC = () => {
         </div>
         <div className={styles.widgets}>
           <h1>Віджети</h1>
-          {widgets.map((item) => (
-            <Paper
-              key={`paper#${item.title}`}
-              elevation={3}
-              className={styles.widget}
-            >
-              <Widget
-                key={`widget#${item.title}`}
-                title={item.title}
-                type={item.type}
-                price={item.price}
-                percent={item.percent}
-                description={item.description}
+          <Paper elevation={3} className={styles.widget}>
+            <div className={styles.widgetBody}>
+              <h2>Генератор собак</h2>
+              <div className={styles.containerForImages}>
+                <img
+                  src={dogWidget.imageUrl}
+                  alt='dog'
+                  className={styles.dogImage}
+                />
+              </div>
+              <Button
+                onClick={() => dispatch(fetchDogWidget())}
+                variant='contained'
+                fullWidth
+              >
+                Отримати нове зображення
+              </Button>
+            </div>
+          </Paper>
+          <Paper elevation={3} className={styles.widget}>
+            <div className={styles.widgetBody}>
+              <h2>Знайти по IP</h2>
+              <TextField
+                id='outlined-basic'
+                value={ip}
+                onChange={(e) => setIp(e.target.value)}
+                label='Введіть IP'
+                variant='outlined'
+                size='small'
+                sx={{ marginTop: 2 }}
+                fullWidth
               />
-            </Paper>
-          ))}
+              <div className={styles.info}>
+                <p>
+                  Країна:
+                  {ipWidget.country}
+                </p>
+                <p>
+                  Область:
+                  {ipWidget.city}
+                </p>
+                <p>
+                  Місто:
+                  {ipWidget.regionName}
+                </p>
+              </div>
+              <Button
+                onClick={() => dispatch(fetchIpWidget(ip))}
+                className={styles.createBtn}
+                variant='contained'
+                fullWidth
+              >
+                Знайти
+              </Button>
+            </div>
+          </Paper>
+          <Paper elevation={3} className={styles.widget}>
+            <div className={styles.widgetBody}>
+              <div className={styles.flexBox}>
+                <h3>{activityWidget.activity}</h3>
+                <span className={styles.type}>{activityWidget.type}</span>
+              </div>
+              <h2>
+                Ціна:
+                {activityWidget.price}
+              </h2>
+              <div className={styles.flexBox}>
+                <span className={styles.accessibility}>
+                  Доступність:
+                  {activityWidget.accessibility}
+                </span>
+              </div>
+            </div>
+          </Paper>
+          <Paper elevation={3} className={styles.widget}>
+            <div className={styles.widgetBody}>
+              <h2>Факти про котів</h2>
+              <div className={styles.info}>
+                <p>{factWidget.fact}</p>
+              </div>
+            </div>
+          </Paper>
+          <Paper elevation={3} className={styles.widget}>
+            <div className={styles.widgetBody}>
+              <h2>Місцева погода</h2>
+              <div className={styles.info}>
+                <p>
+                  Погода:
+                  {weatherWidget.weather}
+                </p>
+                <p>
+                  Деталі:
+                  {weatherWidget.description}
+                </p>
+                <p>
+                  Температура:
+                  {`${weatherWidget.temp}°F`}
+                </p>
+                <p>
+                  Мін. темп.:
+                  {`${weatherWidget.tempMin}°F`}
+                </p>
+                <p>
+                  Макс. темп.:
+                  {`${weatherWidget.tempMax}°F`}
+                </p>
+                <p>
+                  Вологість:
+                  {`${weatherWidget.humidity}%`}
+                </p>
+                <p>
+                  Тиск:
+                  {`${weatherWidget.pressure}гПа`}
+                </p>
+              </div>
+            </div>
+          </Paper>
         </div>
       </div>
     </div>

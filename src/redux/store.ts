@@ -1,16 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import tasksReducer from './tasks';
-import widgetsReducer from './widgets';
 import { authReducer } from './auth';
 import themeReducer from './theme';
+import dogReducer from './widgets/dog';
+import ipReducer from './widgets/ip';
+import activityReducer from './widgets/activity';
+import factReducer from './widgets/fact';
+import weatherReducer from './widgets/weather';
 
 export const store = configureStore({
   reducer: {
     tasks: tasksReducer,
-    widgets: widgetsReducer,
     auth: authReducer,
     theme: themeReducer,
+    dog: dogReducer,
+    ip: ipReducer,
+    activity: activityReducer,
+    fact: factReducer,
+    weather: weatherReducer,
   },
 });
 
