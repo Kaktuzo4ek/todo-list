@@ -52,7 +52,13 @@
         "namedComponents": ["arrow-function", "function-declaration"],
         "unnamedComponents": "arrow-function"
       }
-    ]
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "object-curly-newline": "off",
+    "no-unneeded-ternary": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-param-reassign": "off",
+    "operator-linebreak": "off"
   },
   "settings": {
     "import/resolver": {

@@ -1,12 +1,6 @@
-/* eslint-disable max-len */
-/* eslint-disable no-param-reassign */
-/* eslint-disable operator-linebreak */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-unneeded-ternary */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Widget from '../../components/widget';
-// import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface Widget {
   title: string;

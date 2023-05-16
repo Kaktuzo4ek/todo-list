@@ -1,7 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable operator-linebreak */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-unneeded-ternary */
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {

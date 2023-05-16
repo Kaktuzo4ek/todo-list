@@ -1,5 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -51,7 +49,7 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             className={styles.field}
-            label={`Ім'я`}
+            label={"Ім'я"}
             type='text'
             error={Boolean(errors.name?.message)}
             helperText={errors.name?.message}

@@ -1,18 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-alert */
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-unneeded-ternary */
-/* eslint-disable object-curly-newline */
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 
 import { useDispatch } from 'react-redux';
-import { RootState, useAppSelector } from '../../redux/store';
+import { AppDispatch, RootState, useAppSelector } from '../../redux/store';
 import Widget from '../../components/widget';
 
 import styles from './home.module.scss';
@@ -34,7 +26,7 @@ import {
 } from '../../redux/widgets';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [taskName, setTaskName] = React.useState('');
 
@@ -151,11 +143,14 @@ const Home: React.FC = () => {
   };
 
   React.useEffect(() => {
-    dispatch(fetchWidget1() as any);
-    dispatch(fetchWidget2() as any);
-    dispatch(fetchWidget3() as any);
-    dispatch(fetchWidget4() as any);
-    dispatch(fetchWidget5() as any);
+    const fetchWidgets = (): void => {
+      dispatch(fetchWidget1());
+      dispatch(fetchWidget2());
+      dispatch(fetchWidget3());
+      dispatch(fetchWidget4());
+      dispatch(fetchWidget5());
+    };
+    fetchWidgets();
   }, []);
 
   return (
